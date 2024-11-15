@@ -1,4 +1,4 @@
-package com.ilyanders.restfulapi.controller;
+package com.ilyanders.restfulapi.controllers;
 
 import com.ilyanders.restfulapi.entity.Book;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/books2")
+@RequestMapping("/books")
 public class RabbitController {
     private final AmqpTemplate amqpTemplate;
 
@@ -27,6 +27,6 @@ public class RabbitController {
 
     @DeleteMapping("/{id}")
     public void deleteBookMessage(@PathVariable("id") int id) {
-        amqpTemplate.convertSendAndReceive("deleteQueue", id);
+        amqpTemplate.convertAndSend("deleteQueue", id);
     }
 }
