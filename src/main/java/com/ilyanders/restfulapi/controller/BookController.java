@@ -12,16 +12,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BookController {
+
     private final BookRepository bookRepository;
 
     @Autowired
     public BookController(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-    }
-
-    @PostMapping
-    public void addBook(@RequestBody Book book) {
-        bookRepository.save(book);
     }
 
     @GetMapping
@@ -35,30 +31,8 @@ public class BookController {
 
         if (book == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(book, HttpStatus.OK);
         }
-    }
 
-    @PutMapping
-    public ResponseEntity<?> updateBook(@RequestBody Book book) {
-        if (bookRepository.existsById(book.getId())) {
-            bookRepository.save(book);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable(name = "id") int id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(book, HttpStatus.OK);
     }
 }

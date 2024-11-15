@@ -1,10 +1,18 @@
 package com.ilyanders.restfulapi.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "books")
-public class Book {
+@Data
+public class Book implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,35 +26,13 @@ public class Book {
     @Column(name = "publishedDate")
     private String publishedDate;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublishedDate() {
-        return publishedDate;
-    }
-
-    public void setPublishedDate(String publishedDate) {
-        this.publishedDate = publishedDate;
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publishedDate='" + publishedDate + '\'' +
+                '}';
     }
 }
