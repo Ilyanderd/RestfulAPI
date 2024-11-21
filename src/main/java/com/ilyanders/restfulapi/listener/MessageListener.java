@@ -1,35 +1,42 @@
 package com.ilyanders.restfulapi.listener;
 
 import com.ilyanders.restfulapi.entity.Book;
-import com.ilyanders.restfulapi.repository.BookRepository;
+import com.ilyanders.restfulapi.service.WriteBookService;
+import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @EnableRabbit
 @Component
+@AllArgsConstructor
 public class MessageListener {
-
-    private final BookRepository bookRepository;
-
-    @Autowired
-    public MessageListener(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    private final WriteBookService writeBookService;
 
     @RabbitListener(queues = "addQueue")
     public void addBook(Book book) {
-        bookRepository.save(book);
+        try {
+            writeBookService.addBook(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @RabbitListener(queues = "updateQueue")
     public void updateBook(Book book) {
-        bookRepository.save(book);
+        try {
+            writeBookService.updateBook(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @RabbitListener(queues = "deleteQueue")
     public void deleteBook(int id) {
-        bookRepository.deleteById(id);
+        try {
+            writeBookService.deleteBook(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
